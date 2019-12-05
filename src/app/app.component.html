@@ -1,2 +1,26 @@
 <div>HackStories</div>
-<mat-slider min="1" max="100" step="1" value="1"></mat-slider>
+
+<div class="stories-container">
+    <mat-card class="story">
+        <mat-card-header>
+            <mat-card-title>Once upon time in hollywood</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content class="story__info">
+            <div class="story__info__rating">
+                <div>by <a class="story__info__rating__nickname"><strong>nickname</strong></a></div>
+                <div class="story__info__rating__points">
+                    <button mat-icon-button color="warn" (click)="showNotification()">
+                        <mat-icon>favorite</mat-icon>
+                    </button>
+                    <div class="story__info__rating__points__count">200</div>
+                </div>
+            </div>
+            <div class="story__info__date">23-12-19 18:00</div>
+        </mat-card-content>
+
+        <mat-card-actions class="story__actions">
+            <a mat-raised-button color="accent">Читать</a>
+        </mat-card-actions>
+    </mat-card>
+</div>

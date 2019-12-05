@@ -1,0 +1,52 @@
+.stories-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.story {
+    min-width: 200px;
+    margin: 16px;
+}
+
+.story__info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.story__info__rating {
+    display: flex;
+    flex-direction: column;
+}
+
+.story__info__rating__nickname {
+    color: #673ab7;
+    opacity: 1;
+    transition: opacity 0.25s;
+    cursor: pointer;
+}
+
+.story__info__rating__nickname:hover {
+    opacity: 0.75;
+}
+
+.story__info__rating__points {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.story__info__rating__points__count {
+    display: flex;
+    align-items: center;
+}
+
+.story__info__date {
+    opacity: 0.5;
+}
+
+.story__actions {
+    display: flex;
+    justify-content: center;
+}
