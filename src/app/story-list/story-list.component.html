@@ -1,4 +1,4 @@
-<div class="stories-container">
+<div class="stories-container" infinite-scroll (scrolled)="onScrollDown()">
     <div *ngFor="let story of stories">
         <tfs-story [story]="story"></tfs-story>
     </div>

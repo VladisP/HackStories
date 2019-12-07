@@ -13,8 +13,14 @@ export class StoryListComponent implements OnInit {
     constructor(private storyListHttp: StoryListHttpService) {}
 
     ngOnInit() {
-        this.storyListHttp.getStorie$().subscribe(stories => {
+        this.storyListHttp.getStorie$(0).subscribe(stories => {
             this.stories = stories;
+        });
+    }
+
+    onScrollDown() {
+        this.storyListHttp.getStorie$(this.stories.length).subscribe(stories => {
+            this.stories = this.stories.concat(stories);
         });
     }
 }
