@@ -1,0 +1,22 @@
+<mat-card class="story">
+    <mat-card-header>
+        <mat-card-title> {{story?.title}} </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="story__info">
+        <div class="story__info__rating">
+            <div>by <a class="story__info__rating__nickname"><strong> {{story?.author}} </strong></a></div>
+            <div class="story__info__rating__points">
+                <button mat-icon-button color="warn" (click)="showNotification()">
+                    <mat-icon>favorite</mat-icon>
+                </button>
+                <div class="story__info__rating__points__count"> {{story?.points}} </div>
+            </div>
+        </div>
+        <div class="story__info__date"> {{story?.time | date:'dd.MM.yyyy HH:mm'}} </div>
+    </mat-card-content>
+
+    <mat-card-actions class="story__actions">
+        <a [href]="story?.url" target="_blank" mat-raised-button color="accent">Читать</a>
+    </mat-card-actions>
+</mat-card>
