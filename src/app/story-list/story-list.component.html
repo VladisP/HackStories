@@ -1,3 +1,7 @@
+<div *ngIf="isListLoading" class="load-spinner-wrapper">
+    <mat-spinner></mat-spinner>
+</div>
+
 <div class="stories-container" infinite-scroll (scrolled)="onScrollDown()">
     <tfs-story *ngFor="let story of stories" [story]="story"></tfs-story>
 </div>

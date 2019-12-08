@@ -9,11 +9,15 @@ import {IStory} from '../model/istory';
 })
 export class StoryListComponent implements OnInit {
     stories: IStory[] = [];
+    isListLoading = false;
 
     constructor(private storyListHttp: StoryListHttpService) {}
 
     ngOnInit() {
+        this.isListLoading = true;
+
         this.storyListHttp.getStorie$(0).subscribe(stories => {
+            this.isListLoading = false;
             this.stories = stories;
         });
     }

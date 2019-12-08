@@ -1,3 +1,9 @@
+.load-spinner-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 24px;
+}
+
 .stories-container {
     display: flex;
     flex-direction: column;
