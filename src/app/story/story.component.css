@@ -5,6 +5,7 @@
 
 .story {
     min-width: 200px;
+    overflow: hidden;
 }
 
 .story__header {

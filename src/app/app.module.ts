@@ -5,6 +5,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {StoryListModule} from './story-list/story-list.module';
+import {HnUserModule} from './hn-user/hn-user.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -14,6 +15,7 @@ import {StoryListModule} from './story-list/story-list.module';
         MatButtonModule,
         MatToolbarModule,
         StoryListModule,
+        HnUserModule,
     ],
     providers: [],
     bootstrap: [AppComponent],
