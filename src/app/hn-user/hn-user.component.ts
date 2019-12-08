@@ -1,4 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
+import {HnUserHttpService} from './services/hn-user-http.service';
+import {IHnUser} from '../model/ihn-user';
 
 @Component({
     selector: 'tfs-hn-user',
@@ -6,7 +8,24 @@ import {Component, OnInit} from '@angular/core';
     styleUrls: ['./hn-user.component.css'],
 })
 export class HnUserComponent implements OnInit {
-    constructor() {}
+    @Input() userId: string | null = null;
+    user: IHnUser | null = null;
 
-    ngOnInit() {}
+    constructor(private userHttp: HnUserHttpService) {}
+
+    ngOnInit() {
+        this.userHttp.getUser$(<string>this.userId).subscribe(user => (this.user = user));
+    }
+
+    get randomAvatar(): string {
+        return `https://avatars.dicebear.com/v2/identicon/${this.userId}.svg`;
+    }
+
+    get karma(): number {
+        return (<IHnUser>this.user).karma;
+    }
+
+    get createdDate(): number {
+        return (<IHnUser>this.user).created * 1000;
+    }
 }

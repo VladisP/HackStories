@@ -3,6 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {switchMap, map, tap} from 'rxjs/operators';
 import {Observable, forkJoin} from 'rxjs';
 import {IStory} from '../../model/istory';
+import {IListLoaderConfig} from '../../helpers/ilist-loader-config';
+import {HnUserHttpService} from 'src/app/hn-user/services/hn-user-http.service';
 
 interface IStoryDto {
     id: number;
@@ -14,27 +16,44 @@ interface IStoryDto {
     url: string;
 }
 
-@Injectable({providedIn: 'root'})
+const urls = {
+    topStories: 'https://hacker-news.firebaseio.com/v0/topstories.json',
+    newStories: 'https://hacker-news.firebaseio.com/v0/newstories.json',
+    bestStories: 'https://hacker-news.firebaseio.com/v0/beststories.json',
+};
+
+@Injectable({
+    providedIn: 'root',
+})
 export class StoryListHttpService {
-    private topStoriesIds: number[] = [];
+    private storiesIds: number[] = [];
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private hnUserService: HnUserHttpService) {}
 
-    getStorie$(loadedStoriesCount: number, step: number = 10): Observable<IStory[]> {
-        return loadedStoriesCount === 0
-            ? this.getInitialStorie$(step)
+    getStorie$({
+        listType,
+        loadedStoriesCount,
+        step = 10,
+    }: IListLoaderConfig): Observable<IStory[]> {
+        return listType === 'userStories'
+            ? this.getStoriesById$(
+                  this.hnUserService.userStoriesIds.slice(
+                      loadedStoriesCount,
+                      loadedStoriesCount + step,
+                  ),
+              )
+            : loadedStoriesCount === 0
+            ? this.getInitialStorie$(urls[listType], step)
             : this.getStoriesById$(
-                  this.topStoriesIds.slice(loadedStoriesCount, loadedStoriesCount + step),
+                  this.storiesIds.slice(loadedStoriesCount, loadedStoriesCount + step),
               );
     }
 
-    private getInitialStorie$(step: number): Observable<IStory[]> {
-        return this.http
-            .get<number[]>('https://hacker-news.firebaseio.com/v0/topstories.json')
-            .pipe(
-                tap(ids => (this.topStoriesIds = ids)),
-                switchMap(ids => this.getStoriesById$(ids.slice(0, step))),
-            );
+    private getInitialStorie$(url: string, step: number): Observable<IStory[]> {
+        return this.http.get<number[]>(url).pipe(
+            tap(ids => (this.storiesIds = ids)),
+            switchMap(ids => this.getStoriesById$(ids.slice(0, step))),
+        );
     }
 
     private getStoriesById$(ids: number[]): Observable<IStory[]> {
