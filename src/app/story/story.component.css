@@ -23,21 +23,36 @@
     flex-direction: column;
 }
 
-.story__info__rating__nickname {
+.story__info__rating__author {
+    display: flex;
+}
+
+.story__info__rating__author__icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.story__info__rating__author__nickname-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.story__info__rating__author__nickname {
     color: #00bcd4;
     opacity: 1;
     transition: opacity 0.25s;
     cursor: pointer;
 }
 
-.story__info__rating__nickname:hover {
+.story__info__rating__author__nickname:hover {
     opacity: 0.75;
 }
 
 .story__info__rating__points {
     display: flex;
-    justify-content: flex-start;
-    margin-top: 10px;
 }
 
 .story__info__rating__points__count {
@@ -45,8 +60,43 @@
     align-items: center;
 }
 
-.story__info__date {
-    opacity: 0.5;
+.story__info__datetime {
+    display: flex;
+    flex-direction: column;
+}
+
+.story__info__datetime__date-wrapper {
+    display: flex;
+}
+
+.story__info__datetime__date__icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.story__info__datetime__date {
+    display: flex;
+    align-items: center;
+}
+
+.story__info__datetime__time-wrapper {
+    display: flex;
+}
+
+.story__info__datetime__time__icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.story__info__datetime__time {
+    display: flex;
+    align-items: center;
 }
 
 .story__actions {
