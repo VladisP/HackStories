@@ -1,0 +1,11 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$hs-app-primary: mat-palette($mat-orange);
+$hs-app-accent: mat-palette($mat-cyan);
+$hs-app-warn: mat-palette($mat-red);
+
+$hs-app-theme: mat-light-theme($hs-app-primary, $hs-app-accent, $hs-app-warn);
+
+@include angular-material-theme($hs-app-theme);

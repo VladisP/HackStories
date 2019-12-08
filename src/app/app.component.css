@@ -1,6 +1,7 @@
 .toolbar {
     position: fixed;
     z-index: 100;
+    color: white;
 }
 
 .header {
@@ -10,7 +11,7 @@
     justify-content: center;
     padding: 64px;
     padding-top: 128px;
-    background-color: #7e57c2;
+    background-color: #ffa726;
     color: white;
 }
 
