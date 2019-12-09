@@ -17,9 +17,9 @@ interface IStoryDto {
 }
 
 const urls = {
-    topStories: 'https://hacker-news.firebaseio.com/v0/topstories.json',
-    newStories: 'https://hacker-news.firebaseio.com/v0/newstories.json',
-    bestStories: 'https://hacker-news.firebaseio.com/v0/beststories.json',
+    topstories: 'https://hacker-news.firebaseio.com/v0/topstories.json',
+    newstories: 'https://hacker-news.firebaseio.com/v0/newstories.json',
+    beststories: 'https://hacker-news.firebaseio.com/v0/beststories.json',
 };
 
 @Injectable({
@@ -35,7 +35,7 @@ export class StoryListHttpService {
         loadedStoriesCount,
         step = 10,
     }: IListLoaderConfig): Observable<IStory[]> {
-        return listType === 'userStories'
+        return listType === 'userstories'
             ? this.getStoriesById$(
                   this.hnUserService.userStoriesIds.slice(
                       loadedStoriesCount,

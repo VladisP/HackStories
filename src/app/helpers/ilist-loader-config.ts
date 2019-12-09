@@ -1,4 +1,7 @@
-export type ListType = 'topStories' | 'newStories' | 'bestStories' | 'userStories';
+export type ListType = 'topstories' | 'newstories' | 'beststories' | 'userstories';
+
+export const isListType = (type: string) =>
+    !!(type === 'topstories' || type === 'newstories' || type === 'beststories');
 
 export interface IListLoaderConfig {
     listType: ListType;

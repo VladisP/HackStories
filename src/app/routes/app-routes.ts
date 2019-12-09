@@ -4,8 +4,13 @@ import {NotFoundComponent} from '../not-found/not-found.component';
 
 export const appRoutes: Routes = [
     {
-        path: '',
+        path: 'stories/:type',
         component: StoryListComponent,
+    },
+    {
+        path: '',
+        redirectTo: '/stories/topstories',
+        pathMatch: 'full',
     },
     {
         path: '**',
