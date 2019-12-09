@@ -7,6 +7,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {StoryListModule} from './story-list/story-list.module';
 import {HnUserModule} from './hn-user/hn-user.module';
 import {RouterModule} from '@angular/router';
+import {NotFoundModule} from './not-found/not-found.module';
 import {appRoutes} from './routes/app-routes';
 
 @NgModule({
@@ -18,6 +19,7 @@ import {appRoutes} from './routes/app-routes';
         MatToolbarModule,
         StoryListModule,
         HnUserModule,
+        NotFoundModule,
         RouterModule.forRoot(appRoutes),
     ],
     providers: [],
