@@ -6,6 +6,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {StoryListModule} from './story-list/story-list.module';
 import {HnUserModule} from './hn-user/hn-user.module';
+import {RouterModule} from '@angular/router';
+import {appRoutes} from './routes/app-routes';
 
 @NgModule({
     declarations: [AppComponent],
@@ -16,6 +18,7 @@ import {HnUserModule} from './hn-user/hn-user.module';
         MatToolbarModule,
         StoryListModule,
         HnUserModule,
+        RouterModule.forRoot(appRoutes),
     ],
     providers: [],
     bootstrap: [AppComponent],
