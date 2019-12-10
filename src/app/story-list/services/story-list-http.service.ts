@@ -1,8 +1,10 @@
+import {ListType} from '../../helpers/list-type';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {switchMap, map, tap} from 'rxjs/operators';
-import {Observable, forkJoin} from 'rxjs';
+import {Observable, forkJoin, combineLatest} from 'rxjs';
 import {IStory} from '../../model/istory';
+import {HnUserHttpService} from 'src/app/hn-user/services/hn-user-http.service';
 
 interface IStoryDto {
     id: number;
@@ -14,40 +16,52 @@ interface IStoryDto {
     url: string;
 }
 
-@Injectable({providedIn: 'root'})
+const urls = {
+    topstories: 'https://hacker-news.firebaseio.com/v0/topstories.json',
+    newstories: 'https://hacker-news.firebaseio.com/v0/newstories.json',
+    beststories: 'https://hacker-news.firebaseio.com/v0/beststories.json',
+};
+
+@Injectable({
+    providedIn: 'root',
+})
 export class StoryListHttpService {
-    private topStoriesIds: number[] = [];
+    private storiesIds: number[] = [];
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private hnUserService: HnUserHttpService) {}
 
-    getStorie$(loadedStoriesCount: number, step: number = 10): Observable<IStory[]> {
-        return loadedStoriesCount === 0
-            ? this.getInitialStorie$(step)
-            : this.getStoriesById$(
-                  this.topStoriesIds.slice(loadedStoriesCount, loadedStoriesCount + step),
-              );
+    getStorie$(
+        listType: ListType,
+        isInit: boolean = false,
+        count: number = 10,
+    ): Observable<IStory[]> {
+        return listType === 'userstories'
+            ? this.getStoriesById$(this.hnUserService.userStoriesIds, count)
+            : isInit
+            ? this.getInitialStorie$(urls[listType], count)
+            : this.getStoriesById$(this.storiesIds, count);
     }
 
-    private getInitialStorie$(step: number): Observable<IStory[]> {
-        return this.http
-            .get<number[]>('https://hacker-news.firebaseio.com/v0/topstories.json')
-            .pipe(
-                tap(ids => (this.topStoriesIds = ids)),
-                switchMap(ids => this.getStoriesById$(ids.slice(0, step))),
-            );
+    private getInitialStorie$(url: string, count: number): Observable<IStory[]> {
+        return this.http.get<number[]>(url).pipe(
+            tap(ids => (this.storiesIds = ids)),
+            switchMap(ids => this.getStoriesById$(ids, count)),
+        );
     }
 
-    private getStoriesById$(ids: number[]): Observable<IStory[]> {
+    private getStoriesById$(ids: number[], count: number): Observable<IStory[]> {
         return forkJoin(
-            ids.map(id =>
-                this.http.get<IStoryDto>(
-                    `https://hacker-news.firebaseio.com/v0/item/${id}.json`,
+            ids
+                .slice(0, count)
+                .map(id =>
+                    this.http.get<IStoryDto>(
+                        `https://hacker-news.firebaseio.com/v0/item/${id}.json`,
+                    ),
                 ),
-            ),
         ).pipe(
             map(storiesDto =>
                 storiesDto
-                    .filter(dto => dto.type === 'story')
+                    .filter(dto => this.isStory(dto))
                     .map(
                         dto =>
                             <IStory>{
@@ -60,6 +74,32 @@ export class StoryListHttpService {
                             },
                     ),
             ),
+            tap(() => ids.splice(0, count)),
+            switchMap(stories =>
+                stories.length < count && ids.length > 0
+                    ? combineLatest(
+                          [stories],
+                          this.getStoriesById$(ids, count - stories.length),
+                      ).pipe(
+                          map(([headStories, tailStories]) =>
+                              headStories.concat(tailStories),
+                          ),
+                      )
+                    : [stories],
+            ),
+        );
+    }
+
+    private isStory(dto: IStoryDto): boolean {
+        return (
+            dto &&
+            'title' in dto &&
+            'type' in dto &&
+            'by' in dto &&
+            'score' in dto &&
+            'time' in dto &&
+            'url' in dto &&
+            dto.type === 'story'
         );
     }
 }

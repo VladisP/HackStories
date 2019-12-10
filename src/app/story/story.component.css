@@ -5,6 +5,7 @@
 
 .story {
     min-width: 200px;
+    overflow: hidden;
 }
 
 .story__header {
@@ -42,6 +43,7 @@
 
 .story__info__rating__author__nickname {
     color: #00bcd4;
+    text-decoration: none;
     opacity: 1;
     transition: opacity 0.25s;
     cursor: pointer;

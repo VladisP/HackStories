@@ -5,6 +5,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
     declarations: [StoryComponent],
@@ -15,6 +16,7 @@ import {MatButtonModule} from '@angular/material/button';
         MatButtonModule,
         MatIconModule,
         MatSnackBarModule,
+        RouterModule.forChild([]),
     ],
 })
 export class StoryModule {}

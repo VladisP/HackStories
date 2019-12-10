@@ -1,0 +1,24 @@
+<div *ngIf="user" class="user">
+    <div class="user__avatar-wrapper mat-elevation-z10">
+        <img [src]="randomAvatar">
+    </div>
+
+    <h2 class="user__nickname"> {{nickname}} </h2>
+
+    <div class="user__info">
+        <div class="user__info__karma-wrapper">
+            <h4 class="user__info__karma__title">Карма</h4>
+            <h3 class="user__info__karma"> {{karma}} </h3>
+        </div>
+        <div class="user__info__created-wrapper">
+            <h4 class="user__info__created__title">Дата регистрации</h4>
+            <h3 class="user__info__created"> {{createdDate | date:'dd.MM.yyyy' }} </h3>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="user" class="user-stories-title-wrapper">
+    <h1 class="user-stories-title">Истории от {{nickname}} </h1>
+</div>
+
+<tfs-story-list *ngIf="user" listType="userstories"></tfs-story-list>
