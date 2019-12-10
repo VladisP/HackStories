@@ -1,6 +1,8 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {map} from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
 import {HnUserHttpService} from './services/hn-user-http.service';
 import {IHnUser} from '../model/ihn-user';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector: 'tfs-hn-user',
@@ -8,17 +10,38 @@ import {IHnUser} from '../model/ihn-user';
     styleUrls: ['./hn-user.component.css'],
 })
 export class HnUserComponent implements OnInit {
-    @Input() userId: string | null = null;
     user: IHnUser | null = null;
 
-    constructor(private userHttp: HnUserHttpService) {}
+    constructor(
+        private userHttp: HnUserHttpService,
+        private route: ActivatedRoute,
+        private router: Router,
+    ) {}
 
     ngOnInit() {
-        this.userHttp.getUser$(<string>this.userId).subscribe(user => (this.user = user));
+        this.route.paramMap.pipe(map(paramMap => paramMap.get('id'))).subscribe(id => {
+            this.getUser(<string>id);
+        });
+    }
+
+    private getUser(id: string) {
+        this.userHttp.getUser$(id).subscribe(user => {
+            if (user) {
+                this.user = user;
+
+                return;
+            }
+
+            this.router.navigate(['not-found']);
+        });
     }
 
     get randomAvatar(): string {
-        return `https://avatars.dicebear.com/v2/identicon/${this.userId}.svg`;
+        return `https://avatars.dicebear.com/v2/identicon/${this.nickname}.svg`;
+    }
+
+    get nickname(): string {
+        return (<IHnUser>this.user).id;
     }
 
     get karma(): number {

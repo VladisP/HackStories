@@ -15,7 +15,13 @@ export class HnUserHttpService {
     getUser$(id: string): Observable<IHnUser> {
         return this.http
             .get<IHnUser>(`https://hacker-news.firebaseio.com/v0/user/${id}.json`)
-            .pipe(tap(user => (this._userStoriesIds = user.submitted)));
+            .pipe(
+                tap(user => {
+                    if (user && user.submitted) {
+                        this._userStoriesIds = user.submitted;
+                    }
+                }),
+            );
     }
 
     get userStoriesIds(): number[] {
