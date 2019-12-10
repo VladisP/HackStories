@@ -1,8 +1,8 @@
-import {ListType} from './../helpers/ilist-loader-config';
+import {ListType} from '../helpers/list-type';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {map} from 'rxjs/operators';
-import {isListType} from '../helpers/ilist-loader-config';
+import {isListType} from '../helpers/list-type';
 
 @Component({
     selector: 'tfs-main-page',

@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges} from '@angular/core';
 import {StoryListHttpService} from './services/story-list-http.service';
 import {IStory} from '../model/istory';
-import {ListType} from '../helpers/ilist-loader-config';
+import {ListType} from '../helpers/list-type';
 
 @Component({
     selector: 'tfs-story-list',
@@ -22,22 +22,15 @@ export class StoryListComponent implements OnChanges {
     }
 
     private getInitStories() {
-        this.storyListHttp
-            .getStorie$({listType: this.listType, loadedStoriesCount: 0})
-            .subscribe(stories => {
-                this.isListLoading = false;
-                this.stories = stories;
-            });
+        this.storyListHttp.getStorie$(this.listType, true).subscribe(stories => {
+            this.isListLoading = false;
+            this.stories = stories;
+        });
     }
 
     onScrollDown() {
-        this.storyListHttp
-            .getStorie$({
-                listType: this.listType,
-                loadedStoriesCount: this.stories.length,
-            })
-            .subscribe(stories => {
-                this.stories = this.stories.concat(stories);
-            });
+        this.storyListHttp.getStorie$(this.listType).subscribe(stories => {
+            this.stories = this.stories.concat(stories);
+        });
     }
 }

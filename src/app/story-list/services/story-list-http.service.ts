@@ -1,9 +1,9 @@
+import {ListType} from '../../helpers/list-type';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {switchMap, map, tap} from 'rxjs/operators';
-import {Observable, forkJoin} from 'rxjs';
+import {Observable, forkJoin, combineLatest} from 'rxjs';
 import {IStory} from '../../model/istory';
-import {IListLoaderConfig} from '../../helpers/ilist-loader-config';
 import {HnUserHttpService} from 'src/app/hn-user/services/hn-user-http.service';
 
 interface IStoryDto {
@@ -30,39 +30,34 @@ export class StoryListHttpService {
 
     constructor(private http: HttpClient, private hnUserService: HnUserHttpService) {}
 
-    getStorie$({
-        listType,
-        loadedStoriesCount,
-        step = 10,
-    }: IListLoaderConfig): Observable<IStory[]> {
+    getStorie$(
+        listType: ListType,
+        isInit: boolean = false,
+        count: number = 10,
+    ): Observable<IStory[]> {
         return listType === 'userstories'
-            ? this.getStoriesById$(
-                  this.hnUserService.userStoriesIds.slice(
-                      loadedStoriesCount,
-                      loadedStoriesCount + step,
-                  ),
-              )
-            : loadedStoriesCount === 0
-            ? this.getInitialStorie$(urls[listType], step)
-            : this.getStoriesById$(
-                  this.storiesIds.slice(loadedStoriesCount, loadedStoriesCount + step),
-              );
+            ? this.getStoriesById$(this.hnUserService.userStoriesIds, count)
+            : isInit
+            ? this.getInitialStorie$(urls[listType], count)
+            : this.getStoriesById$(this.storiesIds, count);
     }
 
-    private getInitialStorie$(url: string, step: number): Observable<IStory[]> {
+    private getInitialStorie$(url: string, count: number): Observable<IStory[]> {
         return this.http.get<number[]>(url).pipe(
             tap(ids => (this.storiesIds = ids)),
-            switchMap(ids => this.getStoriesById$(ids.slice(0, step))),
+            switchMap(ids => this.getStoriesById$(ids, count)),
         );
     }
 
-    private getStoriesById$(ids: number[]): Observable<IStory[]> {
+    private getStoriesById$(ids: number[], count: number): Observable<IStory[]> {
         return forkJoin(
-            ids.map(id =>
-                this.http.get<IStoryDto>(
-                    `https://hacker-news.firebaseio.com/v0/item/${id}.json`,
+            ids
+                .slice(0, count)
+                .map(id =>
+                    this.http.get<IStoryDto>(
+                        `https://hacker-news.firebaseio.com/v0/item/${id}.json`,
+                    ),
                 ),
-            ),
         ).pipe(
             map(storiesDto =>
                 storiesDto
@@ -78,6 +73,19 @@ export class StoryListHttpService {
                                 url: dto.url,
                             },
                     ),
+            ),
+            tap(() => ids.splice(0, count)),
+            switchMap(stories =>
+                stories.length < count && ids.length > 0
+                    ? combineLatest(
+                          [stories],
+                          this.getStoriesById$(ids, count - stories.length),
+                      ).pipe(
+                          map(([headStories, tailStories]) =>
+                              headStories.concat(tailStories),
+                          ),
+                      )
+                    : [stories],
             ),
         );
     }
