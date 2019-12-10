@@ -8,6 +8,7 @@ import {
     Validators,
 } from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
+import {AuthService} from '../auth/auth.service';
 
 class LoginErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(
@@ -33,6 +34,8 @@ export class LoginComponent {
 
     matcher = new LoginErrorStateMatcher();
 
+    constructor(private authService: AuthService) {}
+
     get email(): AbstractControl {
         return <AbstractControl>this.form.get('email');
     }
@@ -47,7 +50,7 @@ export class LoginComponent {
         }
 
         // tslint:disable-next-line: no-console
-        console.log('sign in');
+        this.authService.login();
     }
 
     onSignUp() {
