@@ -1,6 +1,6 @@
-<mat-card class="story">
+<mat-card *ngIf="story" class="story">
     <mat-card-header class="story__header">
-        <mat-card-title> {{story?.title}} </mat-card-title>
+        <mat-card-title> {{title}} </mat-card-title>
     </mat-card-header>
 
     <mat-card-content class="story__info">
@@ -11,7 +11,8 @@
                 </div>
                 <div class="story__info__rating__author__nickname-wrapper">
                     <div>
-                        by <a class="story__info__rating__author__nickname"><strong> {{story?.author}} </strong></a>
+                        by <a [routerLink]="'/user/' + author" class="story__info__rating__author__nickname"><strong>
+                                {{author}} </strong></a>
                     </div>
                 </div>
             </div>
@@ -20,7 +21,7 @@
                 <button mat-icon-button color="warn" (click)="showNotification()">
                     <mat-icon>favorite</mat-icon>
                 </button>
-                <div class="story__info__rating__points__count"> {{story?.points}} </div>
+                <div class="story__info__rating__points__count"> {{points}} </div>
             </div>
         </div>
 
@@ -30,7 +31,7 @@
                     <mat-icon color="primary">date_range</mat-icon>
                 </div>
                 <div class="story__info__datetime__date">
-                    {{story?.time | date:'dd.MM.yyyy'}}
+                    {{datetime | date:'dd.MM.yyyy'}}
                 </div>
             </div>
 
@@ -39,13 +40,13 @@
                     <mat-icon color="primary">access_time</mat-icon>
                 </div>
                 <div class="story__info__datetime__time">
-                    {{story?.time | date:'HH:mm'}}
+                    {{datetime | date:'HH:mm'}}
                 </div>
             </div>
         </div>
     </mat-card-content>
 
     <mat-card-actions class="story__actions">
-        <a [href]="story?.url" target="_blank" mat-raised-button color="accent">Читать</a>
+        <a [href]="url" target="_blank" mat-raised-button color="accent">Читать</a>
     </mat-card-actions>
 </mat-card>
