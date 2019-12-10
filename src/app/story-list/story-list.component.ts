@@ -1,43 +1,24 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {StoryListHttpService} from './services/story-list-http.service';
 import {IStory} from '../model/istory';
-import {isListType} from '../helpers/ilist-loader-config';
 import {ListType} from '../helpers/ilist-loader-config';
-import {ActivatedRoute, Router} from '@angular/router';
-import {map} from 'rxjs/operators';
 
 @Component({
     selector: 'tfs-story-list',
     templateUrl: './story-list.component.html',
     styleUrls: ['./story-list.component.css'],
 })
-export class StoryListComponent implements OnInit {
-    listType: ListType = 'topstories';
+export class StoryListComponent implements OnChanges {
+    @Input() listType: ListType = 'topstories';
     stories: IStory[] = [];
     isListLoading = false;
 
-    constructor(
-        private storyListHttp: StoryListHttpService,
-        private route: ActivatedRoute,
-        private router: Router,
-    ) {}
+    constructor(private storyListHttp: StoryListHttpService) {}
 
-    ngOnInit() {
-        this.route.paramMap
-            .pipe(map(paramMap => paramMap.get('type')))
-            .subscribe(type => {
-                if (type === null || isListType(type)) {
-                    this.listType = type === null ? 'userstories' : <ListType>type;
-                    this.stories = [];
-                    this.isListLoading = true;
-
-                    this.getInitStories();
-
-                    return;
-                }
-
-                this.router.navigate(['not-found']);
-            });
+    ngOnChanges() {
+        this.stories = [];
+        this.isListLoading = true;
+        this.getInitStories();
     }
 
     private getInitStories() {

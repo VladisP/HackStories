@@ -1,11 +1,11 @@
 import {Routes} from '@angular/router';
-import {StoryListComponent} from '../story-list/story-list.component';
 import {NotFoundComponent} from '../not-found/not-found.component';
+import {MainPageComponent} from '../main-page/main-page.component';
 
 export const appRoutes: Routes = [
     {
         path: 'stories/:type',
-        component: StoryListComponent,
+        component: MainPageComponent,
     },
     {
         path: '',
