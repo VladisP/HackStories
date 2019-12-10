@@ -92,6 +92,7 @@ export class StoryListHttpService {
 
     private isStory(dto: IStoryDto): boolean {
         return (
+            dto &&
             'title' in dto &&
             'type' in dto &&
             'by' in dto &&
