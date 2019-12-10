@@ -66,7 +66,7 @@ export class StoryListHttpService {
         ).pipe(
             map(storiesDto =>
                 storiesDto
-                    .filter(dto => dto.type === 'story')
+                    .filter(dto => this.isStory(dto))
                     .map(
                         dto =>
                             <IStory>{
@@ -79,6 +79,18 @@ export class StoryListHttpService {
                             },
                     ),
             ),
+        );
+    }
+
+    private isStory(dto: IStoryDto): boolean {
+        return (
+            'title' in dto &&
+            'type' in dto &&
+            'by' in dto &&
+            'score' in dto &&
+            'time' in dto &&
+            'url' in dto &&
+            dto.type === 'story'
         );
     }
 }
