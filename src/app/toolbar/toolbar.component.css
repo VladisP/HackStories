@@ -29,6 +29,10 @@
     cursor: pointer;
 }
 
+.profile-icon:focus {
+    outline: none;
+}
+
 .stories-types {
     display: flex;
     justify-content: space-around;
