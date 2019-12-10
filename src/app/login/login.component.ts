@@ -49,8 +49,8 @@ export class LoginComponent {
             return;
         }
 
-        // tslint:disable-next-line: no-console
         this.authService.login();
+        this.form.reset();
     }
 
     onSignUp() {
@@ -62,5 +62,6 @@ export class LoginComponent {
 
         // tslint:disable-next-line: no-console
         console.log('sign up');
+        this.form.reset();
     }
 }
