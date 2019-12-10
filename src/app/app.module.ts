@@ -7,6 +7,7 @@ import {HnUserModule} from './hn-user/hn-user.module';
 import {NotFoundModule} from './not-found/not-found.module';
 import {ToolbarModule} from './toolbar/toolbar.module';
 import {ProfileModule} from './profile/profile.module';
+import {LoginModule} from './login/login.module';
 import {RouterModule} from '@angular/router';
 import {appRoutes} from './routes/app-routes';
 
@@ -20,6 +21,7 @@ import {appRoutes} from './routes/app-routes';
         HnUserModule,
         NotFoundModule,
         ProfileModule,
+        LoginModule,
         RouterModule.forRoot(appRoutes),
     ],
     providers: [],

@@ -1,0 +1,31 @@
+<form [formGroup]="form" class="login-form" (ngSubmit)="onSignIn()">
+    <h1 class="login-form__title">Добро пожаловать на HackStories!</h1>
+
+    <mat-form-field class="login-form__control">
+        <input type="email" matInput placeholder="Электронная почта" [formControl]="email" [errorStateMatcher]="matcher"
+            autocomplete="off">
+        <mat-error *ngIf="email.hasError('email')">
+            Пожалуйста, введите корректный адрес электронной почты
+        </mat-error>
+        <mat-error *ngIf="email.hasError('required')">
+            Данное поле должно быть заполнено
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="login-form__control">
+        <input type="password" matInput placeholder="Пароль" [formControl]="password" [errorStateMatcher]="matcher"
+            autocomplete="off">
+        <mat-error *ngIf="password.hasError('minlength')">
+            Пароль должен содержать хотя бы 6 символов
+        </mat-error>
+        <mat-error *ngIf="password.hasError('required')">
+            Данное поле должно быть заполнено
+        </mat-error>
+    </mat-form-field>
+
+    <div class="login-form__actions">
+        <button type="submit" class="login-form__signin" mat-raised-button color="primary">Войти</button>
+        <button type="button" class="login-form__signup" mat-raised-button color="accent"
+            (click)="onSignUp()">Зарегистрироваться</button>
+    </div>
+</form>
