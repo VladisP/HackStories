@@ -1,16 +1,19 @@
-import {map} from 'rxjs/operators';
-import {Component, OnInit} from '@angular/core';
+import {map, takeUntil} from 'rxjs/operators';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {HnUserHttpService} from './services/hn-user-http.service';
 import {IHnUser} from '../model/ihn-user';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Subject} from 'rxjs';
 
 @Component({
     selector: 'tfs-hn-user',
     templateUrl: './hn-user.component.html',
     styleUrls: ['./hn-user.component.css'],
 })
-export class HnUserComponent implements OnInit {
+export class HnUserComponent implements OnInit, OnDestroy {
     user: IHnUser | null = null;
+
+    private destroy$ = new Subject();
 
     constructor(
         private userHttp: HnUserHttpService,
@@ -19,21 +22,33 @@ export class HnUserComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.route.paramMap.pipe(map(paramMap => paramMap.get('id'))).subscribe(id => {
-            this.getUser(<string>id);
-        });
+        this.route.paramMap
+            .pipe(
+                map(paramMap => paramMap.get('id')),
+                takeUntil(this.destroy$),
+            )
+            .subscribe(id => {
+                this.getUser(<string>id);
+            });
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
     }
 
     private getUser(id: string) {
-        this.userHttp.getUser$(id).subscribe(user => {
-            if (user) {
-                this.user = user;
+        this.userHttp
+            .getUser$(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(user => {
+                if (user) {
+                    this.user = user;
 
-                return;
-            }
+                    return;
+                }
 
-            this.router.navigate(['not-found']);
-        });
+                this.router.navigate(['not-found']);
+            });
     }
 
     get randomAvatar(): string {
