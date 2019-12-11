@@ -8,6 +8,9 @@ import {NotFoundModule} from './not-found/not-found.module';
 import {ToolbarModule} from './toolbar/toolbar.module';
 import {ProfileModule} from './profile/profile.module';
 import {LoginModule} from './login/login.module';
+import {AngularFireModule} from '@angular/fire';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {environment} from '../environments/environment';
 import {RouterModule} from '@angular/router';
 import {appRoutes} from './routes/app-routes';
 
@@ -22,6 +25,8 @@ import {appRoutes} from './routes/app-routes';
         NotFoundModule,
         ProfileModule,
         LoginModule,
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireAuthModule,
         RouterModule.forRoot(appRoutes),
     ],
     providers: [],
