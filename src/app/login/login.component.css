@@ -18,6 +18,11 @@
     margin-top: 16px;
 }
 
+.login-form__error {
+    color: #f44336;
+    font-weight: normal;
+}
+
 .login-form__actions {
     display: flex;
     flex-wrap: wrap;

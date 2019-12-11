@@ -21,6 +21,13 @@ class LoginErrorStateMatcher implements ErrorStateMatcher {
     }
 }
 
+const USER_NOT_FOUND_ERROR = 'auth/user-not-found';
+const DEFAULT = 'DEFAULT';
+const ERROR_MESSAGE: {[key: string]: string} = {
+    [DEFAULT]: 'Неизвестная ошибка. Попробуйте позже',
+    [USER_NOT_FOUND_ERROR]: 'Неверные имя пользователя или пароль',
+};
+
 @Component({
     selector: 'tfs-login',
     templateUrl: './login.component.html',
@@ -32,6 +39,8 @@ export class LoginComponent {
         password: new FormControl('', [Validators.required, Validators.minLength(6)]),
     });
 
+    errorMessage: string | null = null;
+    isLoading = false;
     matcher = new LoginErrorStateMatcher();
 
     constructor(private authService: AuthService) {}
@@ -49,10 +58,23 @@ export class LoginComponent {
             return;
         }
 
+        this.isLoading = true;
+        this.errorMessage = null;
+
         const {email, password} = this.form.value;
 
-        this.authService.login(email, password);
-        this.form.reset();
+        this.authService.login(email, password).subscribe(
+            () => {
+                this.isLoading = false;
+                this.form.reset();
+            },
+            error => {
+                const code = error && error.code;
+
+                this.isLoading = false;
+                this.errorMessage = ERROR_MESSAGE[code] || ERROR_MESSAGE.DEFAULT;
+            },
+        );
     }
 
     onSignUp() {

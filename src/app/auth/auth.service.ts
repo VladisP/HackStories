@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, from} from 'rxjs';
 import {IUser} from '../model/iuser';
 import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
@@ -42,8 +42,8 @@ export class AuthService {
         return this._user$.asObservable().pipe(map(user => !!user));
     }
 
-    login(email: string, password: string) {
-        this.afAuth.auth.signInWithEmailAndPassword(email, password);
+    login(email: string, password: string): Observable<firebase.auth.UserCredential> {
+        return from(this.afAuth.auth.signInWithEmailAndPassword(email, password));
     }
 
     logout() {
