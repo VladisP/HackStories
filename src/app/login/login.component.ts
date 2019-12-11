@@ -49,7 +49,9 @@ export class LoginComponent {
             return;
         }
 
-        this.authService.login();
+        const {email, password} = this.form.value;
+
+        this.authService.login(email, password);
         this.form.reset();
     }
 

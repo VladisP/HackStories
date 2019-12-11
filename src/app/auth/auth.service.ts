@@ -1,27 +1,42 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
+import {IUser} from '../model/iuser';
 import {Router} from '@angular/router';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
-    private loggedIn$ = new BehaviorSubject<boolean>(false);
+    private _user$ = new BehaviorSubject<IUser | null>(null);
 
     redirectUrl: string | null = null;
 
-    constructor(private router: Router) {}
+    constructor(private afAuth: AngularFireAuth, private router: Router) {
+        this.afAuth.authState
+            .pipe(
+                map(fullUser => {
+                    if (fullUser) {
+                        return <IUser>{id: fullUser.uid, email: fullUser.email};
+                    }
 
-    get isLoggedIn(): boolean {
-        return this.loggedIn$.getValue();
+                    return null;
+                }),
+            )
+            .subscribe(user => this._user$.next(user));
+    }
+
+    get user$(): Observable<IUser | null> {
+        return this._user$.asObservable();
     }
 
     get isLoggedIn$(): Observable<boolean> {
-        return this.loggedIn$.asObservable();
+        return this._user$.asObservable().pipe(map(user => !!user));
     }
 
-    login() {
-        this.loggedIn$.next(true);
+    login(email: string, password: string) {
+        this.afAuth.auth.signInWithEmailAndPassword(email, password);
 
         if (this.redirectUrl) {
             this.router.navigate([this.redirectUrl]);
@@ -30,6 +45,6 @@ export class AuthService {
     }
 
     logout() {
-        this.loggedIn$.next(false);
+        this.afAuth.auth.signOut();
     }
 }
