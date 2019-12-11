@@ -9,8 +9,17 @@ import {IStory} from '../model/istory';
 })
 export class StoryComponent {
     @Input() story: IStory | null = null;
+    isLoading = false;
 
     constructor(private snackBar: MatSnackBar) {}
+
+    addToFavorites() {
+        this.isLoading = true;
+        setTimeout(() => {
+            this.isLoading = false;
+            this.showNotification();
+        }, 1000);
+    }
 
     showNotification() {
         this.snackBar.open('Статья добавлена в избранное', 'Закрыть', {duration: 2000});

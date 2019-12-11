@@ -18,7 +18,10 @@
             </div>
 
             <div class="story__info__rating__points">
-                <button mat-icon-button color="warn" (click)="showNotification()">
+                <div *ngIf="isLoading" class="story__info__rating__points__spinner-wrapper">
+                    <mat-spinner color="accent" diameter="24"></mat-spinner>
+                </div>
+                <button *ngIf="!isLoading" mat-icon-button color="warn" (click)="addToFavorites()">
                     <mat-icon>favorite</mat-icon>
                 </button>
                 <div class="story__info__rating__points__count"> {{points}} </div>
