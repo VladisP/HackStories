@@ -24,7 +24,14 @@ export class AuthService {
                     return null;
                 }),
             )
-            .subscribe(user => this._user$.next(user));
+            .subscribe(user => {
+                this._user$.next(user);
+
+                if (this.redirectUrl) {
+                    this.router.navigate([this.redirectUrl]);
+                    this.redirectUrl = null;
+                }
+            });
     }
 
     get user$(): Observable<IUser | null> {
@@ -37,14 +44,10 @@ export class AuthService {
 
     login(email: string, password: string) {
         this.afAuth.auth.signInWithEmailAndPassword(email, password);
-
-        if (this.redirectUrl) {
-            this.router.navigate([this.redirectUrl]);
-            this.redirectUrl = null;
-        }
     }
 
     logout() {
         this.afAuth.auth.signOut();
+        this.router.navigate(['login']);
     }
 }
