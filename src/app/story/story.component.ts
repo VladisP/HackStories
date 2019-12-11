@@ -22,7 +22,7 @@ export class StoryComponent {
     addToFavorites() {
         if (this.authService.isLoggedIn) {
             this.isLoading = true;
-            this.profileHttp.addToFavorites((<IStory>this.story).id).subscribe(
+            this.profileHttp.addToFavorite$((<IStory>this.story).id).subscribe(
                 () => {
                     this.isLoading = false;
                     this.showMessage('Статья добавлена в избранное');

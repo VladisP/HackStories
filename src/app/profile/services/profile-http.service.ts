@@ -11,7 +11,7 @@ import {Observable, combineLatest} from 'rxjs';
 export class ProfileHttpService {
     constructor(private authService: AuthService, private db: AngularFireDatabase) {}
 
-    addToFavorites(id: number): Observable<any> {
+    addToFavorite$(id: number): Observable<any> {
         return (<Observable<IUser>>this.authService.user$).pipe(
             take(1),
             map(({id}) => this.db.object(`users/${id}/favorites`)),
