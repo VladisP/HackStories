@@ -1,23 +1,14 @@
-<div class="user">
+<div *ngIf="user" class="user">
     <div class="user__avatar-wrapper mat-elevation-z10">
-        <img src="https://avatars.dicebear.com/v2/identicon/vlad.svg">
+        <img [src]="randomAvatar">
     </div>
 
-    <h2> vlad19041999 </h2>
+    <h2> {{nickname}} </h2>
 
-    <!-- <div class="user__info">
-        <div class="user__info__karma-wrapper">
-            <h4 class="user__info__karma__title">Карма</h4>
-            <h3 class="user__info__karma"> {{karma}} </h3>
-        </div>
-        <div class="user__info__created-wrapper">
-            <h4 class="user__info__created__title">Дата регистрации</h4>
-            <h3 class="user__info__created"> {{createdDate | date:'dd.MM.yyyy' }} </h3>
-        </div>
-    </div> -->
+    <button mat-raised-button class="user__signout-btn" (click)="onSignOut()">Выйти</button>
 </div>
 
-<div class="user-stories-title-wrapper">
+<div *ngIf="user" class="user-stories-title-wrapper">
     <h1 class="user-stories-title">Избранные истории</h1>
 </div>
 

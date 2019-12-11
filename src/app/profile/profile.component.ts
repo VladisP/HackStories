@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../auth/auth.service';
+import {IUser} from '../model/iuser';
 
 @Component({
     selector: 'tfs-profile',
@@ -6,7 +8,23 @@ import {Component, OnInit} from '@angular/core';
     styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
-    constructor() {}
+    user: IUser | null = null;
 
-    ngOnInit() {}
+    constructor(private authService: AuthService) {}
+
+    ngOnInit() {
+        this.authService.user$.subscribe(user => (this.user = user));
+    }
+
+    get randomAvatar(): string {
+        return `https://avatars.dicebear.com/v2/identicon/${(<IUser>this.user).id}.svg`;
+    }
+
+    get nickname(): string {
+        return (<IUser>this.user).email;
+    }
+
+    onSignOut() {
+        this.authService.signOut();
+    }
 }

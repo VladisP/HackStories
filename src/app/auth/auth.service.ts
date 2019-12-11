@@ -38,15 +38,19 @@ export class AuthService {
         return this._user$.asObservable();
     }
 
-    get isLoggedIn$(): Observable<boolean> {
-        return this._user$.asObservable().pipe(map(user => !!user));
+    get isLoggedIn(): boolean {
+        return !!this._user$.getValue();
     }
 
-    login(email: string, password: string): Observable<firebase.auth.UserCredential> {
+    signIn(email: string, password: string): Observable<firebase.auth.UserCredential> {
         return from(this.afAuth.auth.signInWithEmailAndPassword(email, password));
     }
 
-    logout() {
+    signUp(email: string, password: string): Observable<firebase.auth.UserCredential> {
+        return from(this.afAuth.auth.createUserWithEmailAndPassword(email, password));
+    }
+
+    signOut() {
         this.afAuth.auth.signOut();
         this.router.navigate(['login']);
     }

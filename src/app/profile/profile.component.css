@@ -16,6 +16,10 @@
     background-color: white;
 }
 
+.user__signout-btn {
+    margin-bottom: 16px;
+}
+
 .user-stories-title-wrapper {
     display: flex;
     justify-content: center;

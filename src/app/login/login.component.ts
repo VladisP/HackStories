@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import {AuthService} from '../auth/auth.service';
+import {Router} from '@angular/router';
 
 class LoginErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(
@@ -22,10 +23,17 @@ class LoginErrorStateMatcher implements ErrorStateMatcher {
 }
 
 const USER_NOT_FOUND_ERROR = 'auth/user-not-found';
+const WRONG_PASSWORD_ERROR = 'auth/wrong-password';
+const EMAIL_IN_USE_ERROR = 'auth/email-already-in-use';
+const INVALID_EMAIL_ERROR = 'auth/invalid-email';
 const DEFAULT = 'DEFAULT';
+
 const ERROR_MESSAGE: {[key: string]: string} = {
     [DEFAULT]: 'Неизвестная ошибка. Попробуйте позже',
-    [USER_NOT_FOUND_ERROR]: 'Неверные имя пользователя или пароль',
+    [USER_NOT_FOUND_ERROR]: 'Пользователя с такими данными не существует',
+    [WRONG_PASSWORD_ERROR]: 'Введён неверный пароль',
+    [EMAIL_IN_USE_ERROR]: 'Аккаунт с данным адресом почты уже зарегистрирован',
+    [INVALID_EMAIL_ERROR]: 'Некорректный адрес электронной почты',
 };
 
 @Component({
@@ -43,7 +51,21 @@ export class LoginComponent {
     isLoading = false;
     matcher = new LoginErrorStateMatcher();
 
-    constructor(private authService: AuthService) {}
+    private authCallbacks = {
+        next: () => {
+            this.isLoading = false;
+            this.form.reset();
+            this.router.navigate(['profile']);
+        },
+        error: (error: any) => {
+            const code = error && error.code;
+
+            this.isLoading = false;
+            this.errorMessage = ERROR_MESSAGE[code] || ERROR_MESSAGE.DEFAULT;
+        },
+    };
+
+    constructor(private authService: AuthService, private router: Router) {}
 
     get email(): AbstractControl {
         return <AbstractControl>this.form.get('email');
@@ -63,18 +85,7 @@ export class LoginComponent {
 
         const {email, password} = this.form.value;
 
-        this.authService.login(email, password).subscribe(
-            () => {
-                this.isLoading = false;
-                this.form.reset();
-            },
-            error => {
-                const code = error && error.code;
-
-                this.isLoading = false;
-                this.errorMessage = ERROR_MESSAGE[code] || ERROR_MESSAGE.DEFAULT;
-            },
-        );
+        this.authService.signIn(email, password).subscribe(this.authCallbacks);
     }
 
     onSignUp() {
@@ -84,8 +95,11 @@ export class LoginComponent {
             return;
         }
 
-        // tslint:disable-next-line: no-console
-        console.log('sign up');
-        this.form.reset();
+        this.isLoading = true;
+        this.errorMessage = null;
+
+        const {email, password} = this.form.value;
+
+        this.authService.signUp(email, password).subscribe(this.authCallbacks);
     }
 }
