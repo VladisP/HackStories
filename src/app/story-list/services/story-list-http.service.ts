@@ -2,9 +2,10 @@ import {ListType} from '../../helpers/list-type';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {switchMap, map, tap} from 'rxjs/operators';
-import {Observable, forkJoin, combineLatest} from 'rxjs';
+import {Observable, forkJoin, combineLatest, of} from 'rxjs';
 import {IStory} from '../../model/istory';
 import {HnUserHttpService} from 'src/app/hn-user/services/hn-user-http.service';
+import {ProfileHttpService} from 'src/app/profile/services/profile-http.service';
 
 interface IStoryDto {
     id: number;
@@ -28,7 +29,11 @@ const urls = {
 export class StoryListHttpService {
     private storiesIds: number[] = [];
 
-    constructor(private http: HttpClient, private hnUserService: HnUserHttpService) {}
+    constructor(
+        private http: HttpClient,
+        private hnUserService: HnUserHttpService,
+        private profileService: ProfileHttpService,
+    ) {}
 
     getStorie$(
         listType: ListType,
@@ -37,6 +42,8 @@ export class StoryListHttpService {
     ): Observable<IStory[]> {
         return listType === 'userstories'
             ? this.getStoriesById$(this.hnUserService.userStoriesIds, count)
+            : listType === 'favoritestories'
+            ? this.getStoriesById$(this.profileService.favoriteStoriesIds, count)
             : isInit
             ? this.getInitialStorie$(urls[listType], count)
             : this.getStoriesById$(this.storiesIds, count);
@@ -50,44 +57,46 @@ export class StoryListHttpService {
     }
 
     private getStoriesById$(ids: number[], count: number): Observable<IStory[]> {
-        return forkJoin(
-            ids
-                .slice(0, count)
-                .map(id =>
-                    this.http.get<IStoryDto>(
-                        `https://hacker-news.firebaseio.com/v0/item/${id}.json`,
-                    ),
-                ),
-        ).pipe(
-            map(storiesDto =>
-                storiesDto
-                    .filter(dto => this.isStory(dto))
-                    .map(
-                        dto =>
-                            <IStory>{
-                                id: dto.id,
-                                title: dto.title,
-                                author: dto.by,
-                                points: dto.score,
-                                time: new Date(dto.time * 1000),
-                                url: dto.url,
-                            },
-                    ),
-            ),
-            tap(() => ids.splice(0, count)),
-            switchMap(stories =>
-                stories.length < count && ids.length > 0
-                    ? combineLatest(
-                          [stories],
-                          this.getStoriesById$(ids, count - stories.length),
-                      ).pipe(
-                          map(([headStories, tailStories]) =>
-                              headStories.concat(tailStories),
+        return ids.length === 0
+            ? of([])
+            : forkJoin(
+                  ids
+                      .slice(0, count)
+                      .map(id =>
+                          this.http.get<IStoryDto>(
+                              `https://hacker-news.firebaseio.com/v0/item/${id}.json`,
                           ),
-                      )
-                    : [stories],
-            ),
-        );
+                      ),
+              ).pipe(
+                  map(storiesDto =>
+                      storiesDto
+                          .filter(dto => this.isStory(dto))
+                          .map(
+                              dto =>
+                                  <IStory>{
+                                      id: dto.id,
+                                      title: dto.title,
+                                      author: dto.by,
+                                      points: dto.score,
+                                      time: new Date(dto.time * 1000),
+                                      url: dto.url,
+                                  },
+                          ),
+                  ),
+                  tap(() => ids.splice(0, count)),
+                  switchMap(stories =>
+                      stories.length < count && ids.length > 0
+                          ? combineLatest(
+                                [stories],
+                                this.getStoriesById$(ids, count - stories.length),
+                            ).pipe(
+                                map(([headStories, tailStories]) =>
+                                    headStories.concat(tailStories),
+                                ),
+                            )
+                          : [stories],
+                  ),
+              );
     }
 
     private isStory(dto: IStoryDto): boolean {
