@@ -20,7 +20,7 @@
                         "tsConfig": "tsconfig.app.json",
                         "aot": false,
                         "assets": ["src/favicon.ico", "src/assets"],
-                        "styles": ["src/theme/hs-app-theme.scss", "src/styles.css"],
+                        "styles": ["src/theme/hs-app-theme.scss", "src/styles.scss"],
                         "scripts": []
                     },
                     "configurations": {
@@ -80,7 +80,7 @@
                         "tsConfig": "tsconfig.spec.json",
                         "karmaConfig": "karma.conf.js",
                         "assets": ["src/favicon.ico", "src/assets"],
-                        "styles": ["src/theme/hs-app-theme.scss", "src/styles.css"],
+                        "styles": ["src/theme/hs-app-theme.scss", "src/styles.scss"],
                         "scripts": []
                     }
                 },

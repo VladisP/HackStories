@@ -2,6 +2,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FaIconLibrary} from '@fortawesome/angular-fontawesome';
+import {faVk} from '@fortawesome/free-brands-svg-icons/faVk';
 import {MainPageModule} from './main-page/main-page.module';
 import {HnUserModule} from './hn-user/hn-user.module';
 import {NotFoundModule} from './not-found/not-found.module';
@@ -36,4 +38,8 @@ registerLocaleData(localeRu, 'ru');
     providers: [],
     bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+    constructor(library: FaIconLibrary) {
+        library.addIcons(faVk);
+    }
+}
