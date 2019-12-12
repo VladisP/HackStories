@@ -1,5 +1,6 @@
 import {AuthService} from './../auth/auth.service';
 import {ProfileHttpService} from '../profile/services/profile-http.service';
+import {ShareService} from '@ngx-share/core';
 import {Component, Input, OnInit} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {IStory} from '../model/istory';
@@ -18,6 +19,7 @@ export class StoryComponent implements OnInit {
         private authService: AuthService,
         private profileHttp: ProfileHttpService,
         private snackBar: MatSnackBar,
+        public shareService: ShareService,
     ) {}
 
     ngOnInit() {
@@ -78,6 +80,10 @@ export class StoryComponent implements OnInit {
 
     private showMessage(message: string) {
         this.snackBar.open(message, 'Закрыть', {duration: 2000});
+    }
+
+    onShare() {
+        console.log('click');
     }
 
     get title(): string {

@@ -39,8 +39,10 @@
       <div class="story__actions__points__count"> {{points}} </div>
     </div>
 
-    <div class="story__actions__share-btn-wrapper">
-      <share-button button="vk" [url]="url" theme="circles-light" size="-6"></share-button>
+    <div class="story__actions__share-btn-wrapper" (click)="onShare()">
+      <button shareButton="vk" [url]="url" mat-icon-button class="story__actions__share-btn mat-elevation-z3">
+        <fa-icon [icon]="shareService.prop.vk.icon" size="lg" [styles]="{'color': '#ff9800'}"></fa-icon>
+      </button>
     </div>
   </mat-card-actions>
 </mat-card>
