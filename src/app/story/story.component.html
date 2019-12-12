@@ -25,7 +25,7 @@
   </mat-card-title>
 
   <mat-card-actions class="story__actions">
-    <a [href]="url" target="_blank" mat-button>Читать</a>
+    <a class="story__actions__read-url" [href]="url" target="_blank" mat-button>Читать</a>
 
     <div class="story__actions__points">
       <div *ngIf="isLoading" class="story__actions__points__spinner-wrapper">
@@ -39,6 +39,8 @@
       <div class="story__actions__points__count"> {{points}} </div>
     </div>
 
-    <share-button button="vk" [url]="url"></share-button>
+    <div class="story__actions__share-btn-wrapper">
+      <share-button button="vk" [url]="url" theme="circles-light" size="-6"></share-button>
+    </div>
   </mat-card-actions>
 </mat-card>
