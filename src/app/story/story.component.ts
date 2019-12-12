@@ -1,6 +1,6 @@
 import {AuthService} from './../auth/auth.service';
 import {ProfileHttpService} from '../profile/services/profile-http.service';
-import {ShareService} from '@ngx-share/core';
+import {ShareService, IShareButton} from '@ngx-share/core';
 import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {IStory} from '../model/istory';
@@ -23,7 +23,7 @@ export class StoryComponent implements OnInit, OnDestroy {
         public authService: AuthService,
         private profileHttp: ProfileHttpService,
         private snackBar: MatSnackBar,
-        public shareService: ShareService,
+        private shareService: ShareService,
     ) {}
 
     ngOnInit() {
@@ -115,5 +115,9 @@ export class StoryComponent implements OnInit, OnDestroy {
 
     get url(): string {
         return (<IStory>this.story).url;
+    }
+
+    get icon(): any {
+        return (<IShareButton>this.shareService.prop.vk).icon;
     }
 }

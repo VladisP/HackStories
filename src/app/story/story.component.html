@@ -42,7 +42,7 @@
     <div class="story__actions__share-btn-wrapper" (click)="onShare()">
       <button shareButton="vk" [url]="url" mat-icon-button class="story__actions__share-btn mat-elevation-z3"
         [disabled]="!(authService.user$ | async)">
-        <fa-icon [icon]="shareService.prop.vk.icon" size="lg" [styles]="{'color': '#ff9800'}"></fa-icon>
+        <fa-icon [icon]="icon" size="lg" [styles]="{'color': '#ff9800'}"></fa-icon>
       </button>
     </div>
   </mat-card-actions>
