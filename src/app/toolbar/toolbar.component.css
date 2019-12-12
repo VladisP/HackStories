@@ -4,37 +4,17 @@
     color: white;
 }
 
-.logo-container,
-.profile-icon-container {
+.logo-container {
     padding: 3px;
     box-sizing: border-box;
     border-radius: 100%;
     border: 2px solid white;
 }
 
-.profile-icon-container {
-    margin-left: 8px;
-}
-
 .logo {
     display: block;
     width: 38px;
     height: 38px;
-}
-
-.profile-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 48px;
-    width: 38px;
-    height: 38px;
-    user-select: none;
-    cursor: pointer;
-}
-
-.profile-icon:focus {
-    outline: none;
 }
 
 .stories-types {
@@ -74,4 +54,30 @@
     background-color: white;
     color: #ff9800;
     cursor: pointer;
+}
+
+.profile-icon-container {
+    margin-left: 8px;
+    width: 48px;
+    height: 48px;
+    padding: 3px;
+    box-sizing: border-box;
+    border-radius: 100%;
+    border: 2px solid white;
+}
+
+.profile-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    width: 38px;
+    height: 38px;
+    user-select: none;
+    cursor: pointer;
+    color: white;
+}
+
+.profile-icon:focus {
+    outline: none;
 }
