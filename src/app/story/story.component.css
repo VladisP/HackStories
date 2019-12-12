@@ -8,27 +8,16 @@
     overflow: hidden;
 }
 
-.story__header {
-    display: flex;
-    justify-content: center;
-}
-
 .story__info {
     display: flex;
-    justify-content: space-around;
-    margin-top: 10px;
+    justify-content: space-between;
 }
 
-.story__info__rating {
-    display: flex;
-    flex-direction: column;
-}
-
-.story__info__rating__author {
+.story__info__author {
     display: flex;
 }
 
-.story__info__rating__author__icon-wrapper {
+.story__info__author__icon-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,12 +25,12 @@
     height: 40px;
 }
 
-.story__info__rating__author__nickname-wrapper {
+.story__info__author__nickname-wrapper {
     display: flex;
     align-items: center;
 }
 
-.story__info__rating__author__nickname {
+.story__info__author__nickname {
     color: #00bcd4;
     text-decoration: none;
     opacity: 1;
@@ -49,59 +38,33 @@
     cursor: pointer;
 }
 
-.story__info__rating__author__nickname:hover {
+.story__info__author__nickname:hover {
     opacity: 0.75;
 }
 
-.story__info__rating__points {
+.story__info__datetime-wrapper {
     display: flex;
-}
-
-.story__info__rating__points__count {
-    display: flex;
-    align-items: center;
 }
 
 .story__info__datetime {
     display: flex;
-    flex-direction: column;
-}
-
-.story__info__datetime__date-wrapper {
-    display: flex;
-}
-
-.story__info__datetime__date__icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-}
-
-.story__info__datetime__date {
-    display: flex;
     align-items: center;
 }
 
-.story__info__datetime__time-wrapper {
-    display: flex;
-}
-
-.story__info__datetime__time__icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-}
-
-.story__info__datetime__time {
-    display: flex;
-    align-items: center;
+.story__title {
+    text-decoration: none;
+    color: black;
 }
 
 .story__actions {
     display: flex;
-    justify-content: center;
+}
+
+.story__actions__points {
+    display: flex;
+}
+
+.story__actions__points__count {
+    display: flex;
+    align-items: center;
 }
