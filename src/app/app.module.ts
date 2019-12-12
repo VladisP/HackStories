@@ -13,6 +13,10 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {environment} from '../environments/environment';
 import {RouterModule} from '@angular/router';
 import {appRoutes} from './routes/app-routes';
+import localeRu from '@angular/common/locales/ru';
+import {registerLocaleData} from '@angular/common';
+
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
     declarations: [AppComponent],
