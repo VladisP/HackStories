@@ -54,9 +54,27 @@ export class ProfileHttpService {
         );
     }
 
+    removeFromFavorite$(removeId: number): Observable<any> {
+        return (<Observable<IUser>>this.authService.user$).pipe(
+            take(1),
+            map(({id}) => this.db.object(`users/${id}/favorites`)),
+            switchMap(ref => {
+                return combineLatest([ref], ref.valueChanges()).pipe(
+                    take(1),
+                    map(([ref, ids]) => {
+                        if (!ids || (<number[]>ids).indexOf(removeId) === -1) {
+                            throw 'not exist';
+                        }
+
+                        ref.set((<number[]>ids).filter(id => id !== removeId));
+                    }),
+                );
+            }),
+        );
+    }
+
     isFavorite$(id: number): Observable<boolean> {
         return this.authService.user$.pipe(
-            take(1),
             map(user => user && this.db.object(`users/${user.id}/favorites`)),
             switchMap(ref => (ref ? ref.valueChanges() : of(null))),
             map(ids => ids && (<number[]>ids).indexOf(id) !== -1),

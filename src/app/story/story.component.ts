@@ -3,7 +3,6 @@ import {ProfileHttpService} from '../profile/services/profile-http.service';
 import {Component, Input, OnInit} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {IStory} from '../model/istory';
-import {Observable} from 'rxjs';
 
 @Component({
     selector: 'tfs-story',
@@ -13,7 +12,7 @@ import {Observable} from 'rxjs';
 export class StoryComponent implements OnInit {
     @Input() story: IStory | null = null;
     isLoading = false;
-    isFavorite$: Observable<boolean> | null = null;
+    isFavorite = false;
 
     constructor(
         private authService: AuthService,
@@ -22,33 +21,62 @@ export class StoryComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.isFavorite$ = this.profileHttp.isFavorite$((<IStory>this.story).id);
+        this.profileHttp
+            .isFavorite$((<IStory>this.story).id)
+            .subscribe(isFavorite => (this.isFavorite = isFavorite));
     }
 
-    addToFavorites() {
+    onFavoriteClick() {
         if (this.authService.isLoggedIn) {
             this.isLoading = true;
-            this.profileHttp.addToFavorite$((<IStory>this.story).id).subscribe(
-                () => {
-                    this.isLoading = false;
-                    this.showMessage('Статья добавлена в избранное');
-                },
-                error => {
-                    const errorMessage =
-                        error === 'duplicate'
-                            ? 'Статья уже находится в избранном'
-                            : 'Произошла неизвестная ошибка';
 
-                    this.isLoading = false;
-                    this.showMessage(errorMessage);
-                },
-            );
+            if (this.isFavorite) {
+                this.removeFromFavorite();
+            } else {
+                this.addToFavorite();
+            }
         } else {
             this.showMessage('Пожалуйста, сначала авторизируйтесь');
         }
     }
 
-    showMessage(message: string) {
+    private addToFavorite() {
+        this.profileHttp.addToFavorite$((<IStory>this.story).id).subscribe(
+            () => {
+                this.isLoading = false;
+                this.showMessage('Статья добавлена в избранное');
+            },
+            error => {
+                const errorMessage =
+                    error === 'duplicate'
+                        ? 'Статья уже находится в избранном'
+                        : 'Произошла неизвестная ошибка';
+
+                this.isLoading = false;
+                this.showMessage(errorMessage);
+            },
+        );
+    }
+
+    private removeFromFavorite() {
+        this.profileHttp.removeFromFavorite$((<IStory>this.story).id).subscribe(
+            () => {
+                this.isLoading = false;
+                this.showMessage('Статья удалена из избранного');
+            },
+            error => {
+                const errorMessage =
+                    error === 'not exist'
+                        ? 'Статья не находится в избранном'
+                        : 'Произошла неизвестная ошибка';
+
+                this.isLoading = false;
+                this.showMessage(errorMessage);
+            },
+        );
+    }
+
+    private showMessage(message: string) {
         this.snackBar.open(message, 'Закрыть', {duration: 2000});
     }
 

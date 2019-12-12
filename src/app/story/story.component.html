@@ -21,9 +21,8 @@
                 <div *ngIf="isLoading" class="story__info__rating__points__spinner-wrapper">
                     <mat-spinner color="accent" diameter="24"></mat-spinner>
                 </div>
-                <button *ngIf="!isLoading" mat-icon-button color="warn" (click)="addToFavorites()">
-                    <mat-icon *ngIf="isFavorite$" class="story__info__rating__points__favorite-icon"
-                        [class.active]="(isFavorite$ | async)">
+                <button *ngIf="!isLoading" mat-icon-button color="warn" (click)="onFavoriteClick()">
+                    <mat-icon class="story__info__rating__points__favorite-icon" [class.active]="isFavorite">
                         favorite
                     </mat-icon>
                 </button>
