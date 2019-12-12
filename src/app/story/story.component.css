@@ -13,6 +13,11 @@
     justify-content: center;
 }
 
+.story__short-info {
+  display: flex;
+  justify-content: space-between;
+}
+
 .story__info {
     display: flex;
     justify-content: space-around;
@@ -64,7 +69,6 @@
 
 .story__info__datetime {
     display: flex;
-    flex-direction: column;
 }
 
 .story__info__datetime__date-wrapper {
@@ -103,5 +107,9 @@
 
 .story__actions {
     display: flex;
-    justify-content: center;
+}
+
+.story__title {
+  text-decoration: none;
+  color: black;
 }

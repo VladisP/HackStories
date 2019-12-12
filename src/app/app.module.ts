@@ -8,6 +8,10 @@ import {NotFoundModule} from './not-found/not-found.module';
 import {ToolbarModule} from './toolbar/toolbar.module';
 import {RouterModule} from '@angular/router';
 import {appRoutes} from './routes/app-routes';
+import localeRu from '@angular/common/locales/ru';
+import {registerLocaleData} from '@angular/common';
+
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
     declarations: [AppComponent],

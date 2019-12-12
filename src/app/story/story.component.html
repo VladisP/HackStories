@@ -1,52 +1,40 @@
 <mat-card *ngIf="story" class="story">
-    <mat-card-header class="story__header">
-        <mat-card-title> {{title}} </mat-card-title>
-    </mat-card-header>
-
-    <mat-card-content class="story__info">
-        <div class="story__info__rating">
-            <div class="story__info__rating__author">
-                <div class="story__info__rating__author__icon-wrapper">
-                    <mat-icon color="primary">face</mat-icon>
-                </div>
-                <div class="story__info__rating__author__nickname-wrapper">
-                    <div>
-                        by <a [routerLink]="'/user/' + author" class="story__info__rating__author__nickname"><strong>
-                                {{author}} </strong></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="story__info__rating__points">
-                <button mat-icon-button color="warn" (click)="showNotification()">
-                    <mat-icon>favorite</mat-icon>
-                </button>
-                <div class="story__info__rating__points__count"> {{points}} </div>
-            </div>
+  <mat-card-subtitle class="story__short-info">
+    <div class="story__info__rating__author">
+      <div class="story__info__rating__author__icon-wrapper">
+        <mat-icon color="primary">face</mat-icon>
+      </div>
+      <div class="story__info__rating__author__nickname-wrapper">
+        <div>
+          by <a [routerLink]="'/user/' + author" class="story__info__rating__author__nickname"><strong>
+          {{author}} </strong></a>
         </div>
+      </div>
+    </div>
 
-        <div class="story__info__datetime">
-            <div class="story__info__datetime__date-wrapper">
-                <div class="story__info__datetime__date__icon-wrapper">
-                    <mat-icon color="primary">date_range</mat-icon>
-                </div>
-                <div class="story__info__datetime__date">
-                    {{datetime | date:'dd.MM.yyyy'}}
-                </div>
-            </div>
-
-            <div class="story__info__datetime__time-wrapper">
-                <div class="story__info__datetime__time__icon-wrapper">
-                    <mat-icon color="primary">access_time</mat-icon>
-                </div>
-                <div class="story__info__datetime__time">
-                    {{datetime | date:'HH:mm'}}
-                </div>
-            </div>
+      <div class="story__info__datetime">
+        <div class="story__info__datetime__date-wrapper">
+          <div class="story__info__datetime__date">
+            {{datetime | date:'dd MMMM yyyy': 'ru' : 'ru'}} в {{datetime | date:'HH:mm'}}
+          </div>
         </div>
-    </mat-card-content>
+      </div>
+  </mat-card-subtitle>
 
-    <mat-card-actions class="story__actions">
-        <a [href]="url" target="_blank" mat-raised-button color="accent">Читать</a>
-    </mat-card-actions>
+  <mat-card-title>
+    <a class="story__title" [href]="url" target="_blank">{{title}}</a>
+  </mat-card-title>
+
+  <mat-card-actions class="story__actions">
+    <a [href]="url" target="_blank" mat-button>Читать</a>
+
+    <div class="story__info__rating">
+      <div class="story__info__rating__points">
+        <button mat-icon-button color="warn" (click)="showNotification()">
+          <mat-icon>favorite</mat-icon>
+        </button>
+        <div class="story__info__rating__points__count"> {{points}} </div>
+      </div>
+    </div>
+  </mat-card-actions>
 </mat-card>
