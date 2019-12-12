@@ -1,23 +1,29 @@
 import {AuthService} from './../auth/auth.service';
 import {ProfileHttpService} from '../profile/services/profile-http.service';
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {IStory} from '../model/istory';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'tfs-story',
     templateUrl: './story.component.html',
     styleUrls: ['./story.component.css'],
 })
-export class StoryComponent {
+export class StoryComponent implements OnInit {
     @Input() story: IStory | null = null;
     isLoading = false;
+    isFavorite$: Observable<boolean> | null = null;
 
     constructor(
         private authService: AuthService,
         private profileHttp: ProfileHttpService,
         private snackBar: MatSnackBar,
     ) {}
+
+    ngOnInit() {
+        this.isFavorite$ = this.profileHttp.isFavorite$((<IStory>this.story).id);
+    }
 
     addToFavorites() {
         if (this.authService.isLoggedIn) {

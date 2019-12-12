@@ -53,4 +53,13 @@ export class ProfileHttpService {
             }),
         );
     }
+
+    isFavorite$(id: number): Observable<boolean> {
+        return this.authService.user$.pipe(
+            take(1),
+            map(user => user && this.db.object(`users/${user.id}/favorites`)),
+            switchMap(ref => (ref ? ref.valueChanges() : of(null))),
+            map(ids => ids && (<number[]>ids).indexOf(id) !== -1),
+        );
+    }
 }
