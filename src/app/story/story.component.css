@@ -60,6 +60,12 @@
     display: flex;
 }
 
+.story__actions__read-url {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .story__actions__points {
     display: flex;
 }
@@ -83,4 +89,18 @@ mat-icon.active {
 .story__actions__points__count {
     display: flex;
     align-items: center;
+}
+
+.story__actions__share-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+}
+
+.story__actions__share-btn {
+    background-color: white;
+    cursor: pointer;
 }

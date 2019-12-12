@@ -5,6 +5,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {StoryModule} from '../story/story.module';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {NgxScrollTopModule} from 'ngx-scrolltop';
 
 @NgModule({
     declarations: [StoryListComponent],
@@ -15,6 +16,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
         StoryModule,
         InfiniteScrollModule,
         MatProgressSpinnerModule,
+        NgxScrollTopModule,
     ],
 })
 export class StoryListModule {}

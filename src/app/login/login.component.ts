@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {takeUntil} from 'rxjs/operators';
+import {Component, OnDestroy} from '@angular/core';
 import {
     FormGroup,
     FormControl,
@@ -10,6 +11,7 @@ import {
 import {ErrorStateMatcher} from '@angular/material/core';
 import {AuthService} from '../auth/auth.service';
 import {Router} from '@angular/router';
+import {Subject} from 'rxjs';
 
 class LoginErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(
@@ -41,7 +43,7 @@ const ERROR_MESSAGE: {[key: string]: string} = {
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
     form: FormGroup = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -65,7 +67,13 @@ export class LoginComponent {
         },
     };
 
+    private destroy$ = new Subject();
+
     constructor(private authService: AuthService, private router: Router) {}
+
+    ngOnDestroy() {
+        this.destroy$.next();
+    }
 
     get email(): AbstractControl {
         return <AbstractControl>this.form.get('email');
@@ -85,7 +93,10 @@ export class LoginComponent {
 
         const {email, password} = this.form.value;
 
-        this.authService.signIn$(email, password).subscribe(this.authCallbacks);
+        this.authService
+            .signIn$(email, password)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(this.authCallbacks);
     }
 
     onSignUp() {
@@ -100,6 +111,9 @@ export class LoginComponent {
 
         const {email, password} = this.form.value;
 
-        this.authService.signUp$(email, password).subscribe(this.authCallbacks);
+        this.authService
+            .signUp$(email, password)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(this.authCallbacks);
     }
 }

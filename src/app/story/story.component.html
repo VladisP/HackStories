@@ -25,7 +25,7 @@
   </mat-card-title>
 
   <mat-card-actions class="story__actions">
-    <a [href]="url" target="_blank" mat-button>Читать</a>
+    <a class="story__actions__read-url" [href]="url" target="_blank" mat-button>Читать</a>
 
     <div class="story__actions__points">
       <div *ngIf="isLoading" class="story__actions__points__spinner-wrapper">
@@ -37,6 +37,13 @@
         </mat-icon>
       </button>
       <div class="story__actions__points__count"> {{points}} </div>
+    </div>
+
+    <div class="story__actions__share-btn-wrapper" (click)="onShare()">
+      <button shareButton="vk" [url]="url" mat-icon-button class="story__actions__share-btn mat-elevation-z3"
+        [disabled]="!(authService.user$ | async)">
+        <fa-icon [icon]="shareService.prop.vk.icon" size="lg" [styles]="{'color': '#ff9800'}"></fa-icon>
+      </button>
     </div>
   </mat-card-actions>
 </mat-card>

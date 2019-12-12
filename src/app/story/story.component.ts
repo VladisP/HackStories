@@ -1,29 +1,40 @@
 import {AuthService} from './../auth/auth.service';
 import {ProfileHttpService} from '../profile/services/profile-http.service';
-import {Component, Input, OnInit} from '@angular/core';
+import {ShareService} from '@ngx-share/core';
+import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {IStory} from '../model/istory';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
     selector: 'tfs-story',
     templateUrl: './story.component.html',
     styleUrls: ['./story.component.css'],
 })
-export class StoryComponent implements OnInit {
+export class StoryComponent implements OnInit, OnDestroy {
     @Input() story: IStory | null = null;
     isLoading = false;
     isFavorite = false;
 
+    private destroy$ = new Subject();
+
     constructor(
-        private authService: AuthService,
+        public authService: AuthService,
         private profileHttp: ProfileHttpService,
         private snackBar: MatSnackBar,
+        public shareService: ShareService,
     ) {}
 
     ngOnInit() {
         this.profileHttp
             .isFavorite$((<IStory>this.story).id)
+            .pipe(takeUntil(this.destroy$))
             .subscribe(isFavorite => (this.isFavorite = isFavorite));
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
     }
 
     onFavoriteClick() {
@@ -74,6 +85,12 @@ export class StoryComponent implements OnInit {
                 this.showMessage(errorMessage);
             },
         );
+    }
+
+    onShare() {
+        if (!this.authService.isLoggedIn) {
+            this.showMessage('Пожалуйста, сначала авторизируйтесь');
+        }
     }
 
     private showMessage(message: string) {
