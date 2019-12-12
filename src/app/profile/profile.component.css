@@ -1,0 +1,33 @@
+.user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 128px;
+    background-color: #ffa726;
+    color: white;
+}
+
+.user__avatar-wrapper {
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    overflow: hidden;
+    border: 2px solid #ff9800;
+    background-color: white;
+}
+
+.user__signout-btn {
+    margin-bottom: 16px;
+}
+
+.user-stories-title-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0 0 0;
+    font-weight: lighter;
+}
+
+.user-stories-title {
+    font-weight: lighter;
+    color: #ff9800;
+}

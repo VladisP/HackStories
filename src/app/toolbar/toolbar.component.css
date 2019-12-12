@@ -4,9 +4,8 @@
     color: white;
 }
 
-.logo-container {
-    height: 48px;
-    width: 48px;
+.logo-container,
+.profile-icon-container {
     padding: 3px;
     box-sizing: border-box;
     border-radius: 100%;
@@ -15,8 +14,23 @@
 
 .logo {
     display: block;
-    width: 100%;
-    height: 100%;
+    width: 38px;
+    height: 38px;
+}
+
+.profile-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    width: 38px;
+    height: 38px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.profile-icon:focus {
+    outline: none;
 }
 
 .stories-types {

@@ -1,0 +1,8 @@
+<header class="header">
+    <h1 class="header__title">HackStories</h1>
+    <h4>Новости из мира IT, полученные с помощью HackerNews API</h4>
+    <a *ngIf="!(authService.user$ | async)" routerLink="/login" mat-raised-button class="header__btn">Войти</a>
+    <a *ngIf="(authService.user$ | async)" routerLink="/profile" mat-raised-button class="header__btn">
+        Перейти в профиль
+    </a>
+</header>

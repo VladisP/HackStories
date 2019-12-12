@@ -1,0 +1,15 @@
+<div *ngIf="user" class="user">
+    <div class="user__avatar-wrapper mat-elevation-z10">
+        <img [src]="randomAvatar">
+    </div>
+
+    <h2> {{nickname}} </h2>
+
+    <button mat-raised-button class="user__signout-btn" (click)="onSignOut()">Выйти</button>
+</div>
+
+<div *ngIf="user" class="user-stories-title-wrapper">
+    <h1 class="user-stories-title">Избранные истории</h1>
+</div>
+
+<!-- <tfs-story-list *ngIf="user" listType="userstories"></tfs-story-list> -->
