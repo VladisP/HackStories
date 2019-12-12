@@ -102,4 +102,5 @@ mat-icon.active {
 
 .story__actions__share-btn {
     background-color: white;
+    cursor: pointer;
 }

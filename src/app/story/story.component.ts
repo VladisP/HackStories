@@ -16,7 +16,7 @@ export class StoryComponent implements OnInit {
     isFavorite = false;
 
     constructor(
-        private authService: AuthService,
+        public authService: AuthService,
         private profileHttp: ProfileHttpService,
         private snackBar: MatSnackBar,
         public shareService: ShareService,
@@ -78,12 +78,14 @@ export class StoryComponent implements OnInit {
         );
     }
 
-    private showMessage(message: string) {
-        this.snackBar.open(message, 'Закрыть', {duration: 2000});
+    onShare() {
+        if (!this.authService.isLoggedIn) {
+            this.showMessage('Пожалуйста, сначала авторизируйтесь');
+        }
     }
 
-    onShare() {
-        console.log('click');
+    private showMessage(message: string) {
+        this.snackBar.open(message, 'Закрыть', {duration: 2000});
     }
 
     get title(): string {
