@@ -46,6 +46,27 @@
     display: flex;
 }
 
+.story__info__rating__points__spinner-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.story__info__rating__points__favorite-icon {
+    color: #bdbdbd;
+}
+
+mat-icon.active {
+    color: #f44336;
+}
+
+.story__info__rating__points__count {
+    display: flex;
+    align-items: center;
+}
+
 .story__info__datetime {
     display: flex;
     align-items: center;

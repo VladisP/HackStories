@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../auth/auth.service';
 import {IUser} from '../model/iuser';
+import {ProfileHttpService} from './services/profile-http.service';
+import {take} from 'rxjs/operators';
 
 @Component({
     selector: 'tfs-profile',
@@ -10,10 +12,17 @@ import {IUser} from '../model/iuser';
 export class ProfileComponent implements OnInit {
     user: IUser | null = null;
 
-    constructor(private authService: AuthService) {}
+    constructor(
+        private profileService: ProfileHttpService,
+        private authService: AuthService,
+    ) {}
 
     ngOnInit() {
-        this.authService.user$.subscribe(user => (this.user = user));
+        this.authService.user$.pipe(take(1)).subscribe(user => this.setUser(<IUser>user));
+    }
+
+    private setUser(user: IUser) {
+        this.profileService.getUserData$(user.id).subscribe(() => (this.user = user));
     }
 
     get randomAvatar(): string {

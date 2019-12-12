@@ -42,11 +42,11 @@ export class AuthService {
         return !!this._user$.getValue();
     }
 
-    signIn(email: string, password: string): Observable<firebase.auth.UserCredential> {
+    signIn$(email: string, password: string): Observable<firebase.auth.UserCredential> {
         return from(this.afAuth.auth.signInWithEmailAndPassword(email, password));
     }
 
-    signUp(email: string, password: string): Observable<firebase.auth.UserCredential> {
+    signUp$(email: string, password: string): Observable<firebase.auth.UserCredential> {
         return from(this.afAuth.auth.createUserWithEmailAndPassword(email, password));
     }
 

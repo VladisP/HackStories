@@ -5,6 +5,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {RouterModule} from '@angular/router';
 
 @NgModule({
@@ -16,6 +17,7 @@ import {RouterModule} from '@angular/router';
         MatButtonModule,
         MatIconModule,
         MatSnackBarModule,
+        MatProgressSpinnerModule,
         RouterModule.forChild([]),
     ],
 })

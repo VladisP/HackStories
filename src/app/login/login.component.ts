@@ -85,7 +85,7 @@ export class LoginComponent {
 
         const {email, password} = this.form.value;
 
-        this.authService.signIn(email, password).subscribe(this.authCallbacks);
+        this.authService.signIn$(email, password).subscribe(this.authCallbacks);
     }
 
     onSignUp() {
@@ -100,6 +100,6 @@ export class LoginComponent {
 
         const {email, password} = this.form.value;
 
-        this.authService.signUp(email, password).subscribe(this.authCallbacks);
+        this.authService.signUp$(email, password).subscribe(this.authCallbacks);
     }
 }

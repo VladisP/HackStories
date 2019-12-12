@@ -5,6 +5,33 @@
         <mat-icon color="primary">face</mat-icon>
       </div>
 
+
+    <mat-card-content class="story__info">
+        <div class="story__info__rating">
+            <div class="story__info__rating__author">
+                <div class="story__info__rating__author__icon-wrapper">
+                    <mat-icon color="primary">face</mat-icon>
+                </div>
+                <div class="story__info__rating__author__nickname-wrapper">
+                    <div>
+                        by <a [routerLink]="'/user/' + author" class="story__info__rating__author__nickname"><strong>
+                                {{author}} </strong></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="story__info__rating__points">
+                <div *ngIf="isLoading" class="story__info__rating__points__spinner-wrapper">
+                    <mat-spinner color="accent" diameter="24"></mat-spinner>
+                </div>
+                <button *ngIf="!isLoading" mat-icon-button color="warn" (click)="onFavoriteClick()">
+                    <mat-icon class="story__info__rating__points__favorite-icon" [class.active]="isFavorite">
+                        favorite
+                    </mat-icon>
+                </button>
+                <div class="story__info__rating__points__count"> {{points}} </div>
+            </div>
+
       <div class="story__info__author__nickname-wrapper">
         <div>
           by <a [routerLink]="'/user/' + author" class="story__info__author__nickname"><strong>
